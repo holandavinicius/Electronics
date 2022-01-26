@@ -1,0 +1,65 @@
+#include <ASTCanLib.h>
+#include <at90can_drv.h>
+#include <can_compiler.h>
+#include <can_drv.h>
+#include <can_lib.h>
+#include <config.h>
+#include <ASTCanLib.h>
+
+#define MESSAGE_ID        0x777       // Message ID
+#define MESSAGE_PROTOCOL  0         // CAN protocol (0: CAN 2.0A, 1: CAN 2.0B)
+#define MESSAGE_LENGTH    8         // Data length: 8 bytes
+#define MESSAGE_RTR       0         // rtr bit
+
+
+st_cmd_t txMsg;
+
+int inByte;         // incoming serial byte
+
+uint8_t sendData[8];
+// Transmit buffer
+uint8_t txBuffer[8] = {};
+
+uint8_t Pins[] = {14, 15, 16, 17, 4, 5, 6};
+
+void setup() {
+
+  canInit(1000000);                  // Initialise CAN port. must be before Serial.begin
+  Serial.begin(115200);
+  txMsg.pt_data = &txBuffer[0];      // reference message data to transmit buffer
+  for (int i = 0; i < 6; i++) {
+    pinMode(Pins[i], INPUT);
+  }
+
+}
+
+void loop() {
+  for (int i = 0; i < 6; i++) {
+    if (digitalRead(Pins[i]) == HIGH) {
+      if (i == 0) {
+        Serial.println("Marcha Neutra");
+      }
+      else {
+        Serial.println("Marcha ");
+        Serial.print(i + 1);
+      }
+      for (int i = 0; i < 8; i++) {
+        txBuffer[i] = Pins[i];
+      }
+    }
+  }
+  // Setup CAN packet.
+  txMsg.ctrl.ide = MESSAGE_PROTOCOL;  // Set CAN protocol (0: CAN 2.0A, 1: CAN 2.0B)
+  txMsg.id.ext   = MESSAGE_ID;        // Set message ID
+  txMsg.dlc      = MESSAGE_LENGTH;    // Data length: 8 bytes
+  txMsg.ctrl.rtr = MESSAGE_RTR;       // Set rtr bit
+
+  // Send command to the CAN port controller
+  txMsg.cmd = CMD_TX_DATA;       // send message
+  // Wait for the command to be accepted by the controller
+  while (can_cmd(&txMsg) != CAN_CMD_ACCEPTED);
+  // Wait for command to finish executing
+  while (can_get_status(&txMsg) == CAN_STATUS_NOT_COMPLETED);
+  // Transmit is now complete. Wait a bit and loop
+  delay(500);
+}
