@@ -1,5 +1,9 @@
 /**
-  Generated Main Source File
+ Vin√≠cius Holanda Maia
+ Engenharia Autom√≥vel
+ Microprocessadores 2020/21
+ 
+ Generated Main Source File
 
   Company:
     Microchip Technology Inc.
@@ -53,8 +57,8 @@ int mostra_menu = 1, menu = 0, opcaoMenu = 0;
 char menuIdx = '0', caracter_recebido = 0;
 uint16_t start, inicio = 61599;
 
-void funcaoADC(void) { //FunÁ„o de leitura e c·lculo dos valores do ADC
-    second = 1; //Vari·vel de contagem de tempo (1 segundo)
+void funcaoADC(void) { //Fun√ß√£o de leitura e c√°lculo dos valores do ADC
+    second = 1; //Vari√°vel de contagem de tempo (1 segundo)
     if (update == 0) {
         voutt = ADC_GetConversionResult();
         ADC_SelectChannel(channel_AN17);
@@ -68,7 +72,7 @@ void funcaoADC(void) { //FunÁ„o de leitura e c·lculo dos valores do ADC
     }
 }
 
-void LCD(char parameter1[20], char parameter2[20]) { //FunÁ„o de escrita no LDC
+void LCD(char parameter1[20], char parameter2[20]) { //Fun√ß√£o de escrita no LDC
     WriteCmdXLCD(0b00000001);
     while (BusyXLCD());
     WriteCmdXLCD(0b10000001);
@@ -81,64 +85,64 @@ void LCD(char parameter1[20], char parameter2[20]) { //FunÁ„o de escrita no LDC
     while (BusyXLCD());
     
 }
-void motor_angles(void) { //FunÁ„o de controle do angulo do motor
+void motor_angles(void) { //Fun√ß√£o de controle do angulo do motor
     TMR3_StopTimer();
-    PORTCbits.RC2 = 0; //Desliga o sinal do motor apÛs o tempo de ‚ngulo
+    PORTCbits.RC2 = 0; //Desliga o sinal do motor ap√≥s o tempo de √¢ngulo
 
 }
 
-void interrupt_motor(void) { //FunÁ„o de interrupÁ„o dos 20ms do motor
+void interrupt_motor(void) { //Fun√ß√£o de interrup√ß√£o dos 20ms do motor
     PORTCbits.RC2 = 1; //Motor inicia a contagem em HIGH
-    TMR3_WriteTimer(inicio); //InÌcio da contagem do ‚ngulo do motor
+    TMR3_WriteTimer(inicio); //In√≠cio da contagem do √¢ngulo do motor
     TMR3_StartTimer();
 
 }
 
 void Botao_inicio(void) {
-    opca = 1; //Vari·vel de controle selecionada para o inÌcio de injeÁ„o
-    inicio = 61599; //V·lvula comeÁa a injeÁ„o fechada
+    opca = 1; //Vari√°vel de controle selecionada para o in√≠cio de inje√ß√£o
+    inicio = 61599; //V√°lvula come√ßa a inje√ß√£o fechada
 }
 
 void Botao_emergencia(void) {
-    opca = 5; // Seleciona a funÁ„o de escrita "EMERGENCIA"
-    inicio = 61599; // Fecha a v·lvula
-    INTCON3bits.INT2IF = 0; //Desliga a flag de interrupÁ„o do bot„o
+    opca = 5; // Seleciona a fun√ß√£o de escrita "EMERGENCIA"
+    inicio = 61599; // Fecha a v√°lvula
+    INTCON3bits.INT2IF = 0; //Desliga a flag de interrup√ß√£o do bot√£o
 }
 
-void tmr0_select(void) { //FunÁ„o que controla o tempo das funÁıes de injeÁ„o
-    ADC_SelectChannel(channel_AN15); //SeleÁ„o do canal ADC
-    ADC_StartConversion(); //Inicio da convers„o e habilitagem da interrupÁ„o ADC
-    switch (opca) { //Menu de seleÁ„o da vari·vel de controle
-        case 1: //ComeÁa a fase 1
-            i++; // Incremento da Vari·vel de contagem por segundo
+void tmr0_select(void) { //Fun√ß√£o que controla o tempo das fun√ß√µes de inje√ß√£o
+    ADC_SelectChannel(channel_AN15); //Sele√ß√£o do canal ADC
+    ADC_StartConversion(); //Inicio da convers√£o e habilitagem da interrup√ß√£o ADC
+    switch (opca) { //Menu de sele√ß√£o da vari√°vel de controle
+        case 1: //Come√ßa a fase 1
+            i++; // Incremento da Vari√°vel de contagem por segundo
             if (i == 8) { //Fim dos 8 segundos
-                i = 0; //Reinicia a vari·vel de contagem
+                i = 0; //Reinicia a vari√°vel de contagem
                 opca = 2; //Seleciona Fase 2
             }
             break;
         case 2: //Inicia Fase 2
-            i++; //Incremento da Vari·vel de contagem por segundo
+            i++; //Incremento da Vari√°vel de contagem por segundo
             if (i == 10) { //Fim dos 10 segundos
-                i = 0; //Reinicia a vari·vel de contagem
+                i = 0; //Reinicia a vari√°vel de contagem
                 opca = 3; //Seleciona Fase 3
             }
             break;
         case 3: //Inicia Fase 3
-            i++; //Incremento da Vari·vel de contagem por segundo
+            i++; //Incremento da Vari√°vel de contagem por segundo
             if (i == 8) { //Fim dos 8 segundos
-                i = 0; //Reinicia a vari·vel de contagem
-                opca = 4; //Seleciona o aguardo de inÌcio
-                inicio = 61599; // Configura timer para motor em -180∫
-                TMR1_StartTimer(); //Motor em -180∫
+                i = 0; //Reinicia a vari√°vel de contagem
+                opca = 4; //Seleciona o aguardo de in√≠cio
+                inicio = 61599; // Configura timer para motor em -180¬∫
+                TMR1_StartTimer(); //Motor em -180¬∫
             }
             break;
-        case 5: //Vari·vel de controle em EMERG NCIA
-            i++; //Incremento da Vari·vel de contagem por segundo
+        case 5: //Vari√°vel de controle em EMERG√äNCIA
+            i++; //Incremento da Vari√°vel de contagem por segundo
             if (i == 5) { //Fim dos 5 segundos
-                i = 0; //Reinicia Vari·vel de contagem
+                i = 0; //Reinicia Vari√°vel de contagem
                 opca = 4; //Seleciona o aguardo de inicio
-                inicio = 61599; //Configura timer para motor a -180∫
-                TMR1_StartTimer(); //Motor em -180∫
+                inicio = 61599; //Configura timer para motor a -180¬∫
+                TMR1_StartTimer(); //Motor em -180¬∫
             }
     }
 }
@@ -174,15 +178,15 @@ void main(void) {
 
     //INTERRUPT_InterruptManagerHigh();
     
-    TMR0_SetInterruptHandler(tmr0_select); //FunÁ„o de InterrupÁ„o do timer 0
-    TMR1_SetInterruptHandler(interrupt_motor); //FunÁ„o de InterrupÁ„o do timer 1
-    TMR3_SetInterruptHandler(motor_angles); //FunÁ„o de InterrupÁ„o do timer 3
-    INT0_SetInterruptHandler(Botao_inicio); //FunÁ„o de InterrupÁ„o do botao inicio
-    INT2_SetInterruptHandler(Botao_emergencia); //FunÁ„o de InterrupÁ„o do botao emergencia
-    ADC_SetInterruptHandler(funcaoADC); //FunÁ„o de InterrupÁ„o do ADC
+    TMR0_SetInterruptHandler(tmr0_select); //Fun√ß√£o de Interrup√ß√£o do timer 0
+    TMR1_SetInterruptHandler(interrupt_motor); //Fun√ß√£o de Interrup√ß√£o do timer 1
+    TMR3_SetInterruptHandler(motor_angles); //Fun√ß√£o de Interrup√ß√£o do timer 3
+    INT0_SetInterruptHandler(Botao_inicio); //Fun√ß√£o de Interrup√ß√£o do botao inicio
+    INT2_SetInterruptHandler(Botao_emergencia); //Fun√ß√£o de Interrup√ß√£o do botao emergencia
+    ADC_SetInterruptHandler(funcaoADC); //Fun√ß√£o de Interrup√ß√£o do ADC
     //CCPR1H = 
 
-    OpenXLCD(0b00101011); //InicializaÁ„o do LCD
+    OpenXLCD(0b00101011); //Inicializa√ß√£o do LCD
     while (BusyXLCD());
     WriteCmdXLCD(0b00001100);
     while (BusyXLCD());
@@ -193,47 +197,47 @@ void main(void) {
 
 
     while (1) { //Loop infinito MAIN
-        if (second == 1) { //FunÁ„o de controle de tempo
-            switch (opca) { //SeleÁ„o de menu de operaÁ„o
+        if (second == 1) { //Fun√ß√£o de controle de tempo
+            switch (opca) { //Sele√ß√£o de menu de opera√ß√£o
 
-                case 5: //OperaÁ„o EMERGENCIA
+                case 5: //Opera√ß√£o EMERGENCIA
                     LCD("    EMERGENCIA    ","     !!!!!!!!          "); //Escreve no LCD
-                    second = 0; //Vari·vel de tempo em 0
+                    second = 0; //Vari√°vel de tempo em 0
                     break;
                 case 4: //Aguardo de inicio
                     LCD("----AGUARDANDO-----","------INICIO------"); //Escreve no LCD
-                    second = 0; //Vari·vel de tempo em 0
+                    second = 0; //Vari√°vel de tempo em 0
                     break;
-                case 0: //IndicaÁ„o de valores dos sensores
+                case 0: //Indica√ß√£o de valores dos sensores
                     sprintf(temperatura, "TEMP: %.0f  C", temperature); 
                     sprintf(pressao, "PRESSAO: %.1f kPa", pressure);
                     LCD(temperatura,pressao); //Escrita dos valores no LCD
-                    second = 0;//Vari·vel de tempo em 0
+                    second = 0;//Vari√°vel de tempo em 0
                     break;
                 case 1: //Fase 1
-                    if (temperatureMin <= temperature && temperature <= temperatureMax && pressureMin <= pressure && pressure <= pressureMax) { //VerificaÁao de parametros
-                        TMR1_StartTimer(); //InicializaÁ„o do motor
-                        inicio = inicio - 511; //AtualizaÁao da vari·vel do angulo
-                        abertura = 360 * (((float) (61599 - inicio)) / 4094) - 180; //C·lculo do angulo
+                    if (temperatureMin <= temperature && temperature <= temperatureMax && pressureMin <= pressure && pressure <= pressureMax) { //Verifica√ßao de parametros
+                        TMR1_StartTimer(); //Inicializa√ß√£o do motor
+                        inicio = inicio - 511; //Atualiza√ßao da vari√°vel do angulo
+                        abertura = 360 * (((float) (61599 - inicio)) / 4094) - 180; //C√°lculo do angulo
                         sprintf(a_abertura, "    %.0f GRAUS", abertura); 
                         LCD("------FASE 1------", a_abertura); //Escrita no LCD
                     }
                     if (temperatureMin >= temperature || temperature >= temperatureMax) { //Erro de temperatura
                         LCD("ERRO DE TEMPERATURA","     !!!!!!!               "); //Escrita no LCD
                         TMR1_StartTimer(); //Liga motor
-                        inicio = 61599; //Motor em 180∫ (v·lvula fechada))
-                        opca = 0; //Retorno para indicaÁ„o dos valores dos sensores
+                        inicio = 61599; //Motor em 180¬∫ (v√°lvula fechada))
+                        opca = 0; //Retorno para indica√ß√£o dos valores dos sensores
                     }
-                    if (pressureMin >= pressure || pressure >= pressureMax) { //Erro de press„o
+                    if (pressureMin >= pressure || pressure >= pressureMax) { //Erro de press√£o
                         LCD("     ERRO DE PRESSAO","     !!!!!!!               "); //Escrita no LCD
                         TMR1_StartTimer(); //Liga motor
-                        inicio = 61599; //Motor em 180∫ (v·lvula fechada)
-                        opca = 0; //Retorno para indicaÁ„o dos valores dos sensores
+                        inicio = 61599; //Motor em 180¬∫ (v√°lvula fechada)
+                        opca = 0; //Retorno para indica√ß√£o dos valores dos sensores
                     }
-                    second = 0; //Vari·vel de tempo em 0
+                    second = 0; //Vari√°vel de tempo em 0
                     break;
                 case 2: //Fase 2
-                    inicio = 57505; //Motor em 180∫ (v·lvula totalmente aberta)
+                    inicio = 57505; //Motor em 180¬∫ (v√°lvula totalmente aberta)
                     if (temperatureMin <= temperature && temperature <= temperatureMax && pressureMin <= pressure && pressure <= pressureMax) {
 
                         LCD("------FASE 2------","    180 GRAUS");
@@ -256,38 +260,38 @@ void main(void) {
                 case 3: //Fase 3
                     
                     TMR1_StartTimer(); //Acionamento do motor
-                    inicio = inicio + 511; //Parametro de decrementaÁ„o do ‚ngulo de abertura
-                    abertura = 360 * (((float) (61599 - inicio)) / 4094) - 180; //C·lculo angulo de abertura
+                    inicio = inicio + 511; //Parametro de decrementa√ß√£o do √¢ngulo de abertura
+                    abertura = 360 * (((float) (61599 - inicio)) / 4094) - 180; //C√°lculo angulo de abertura
                     sprintf(a_abertura, "    %.0f GRAUS          ", abertura); 
                     LCD("------FASE 2------",a_abertura); //Escrita LCD
-                    second = 0; //ReinicializaÁ·o da vari·vel de tempo
+                    second = 0; //Reinicializa√ß√°o da vari√°vel de tempo
                     break;
             }
         }
-        if (EUSART1_is_rx_ready()) { //InÌcio da EUSART
+        if (EUSART1_is_rx_ready()) { //In√≠cio da EUSART
             rxData = EUSART1_Read(); //Recebe o que foi escrito no EUSART
             EUSART1_Write(rxData); // Mostra caracter recebido devolvendo-o para EUSART
             caracter_recebido = 1; // Indica caracter recebido disponivel em rxData
         }
-        switch (menu) { //SeleÁ„o de menu EUSART
+        switch (menu) { //Sele√ß√£o de menu EUSART
             case 0: //Menu principal
                 if (mostra_menu == 1) {
                     printf("\r\n1 - Iniciar Processo de injecao");
                     printf("\r\n2 - Abortar processo de injecao");
                     printf("\r\n3 - Alterar intervalos");
                     printf("\r\nOpcao: ");
-                    mostra_menu = 0; //Vari·vel de visualizaÁ„o de menu
+                    mostra_menu = 0; //Vari√°vel de visualiza√ß√£o de menu
                 }
                 if (caracter_recebido == 1) { 
-                    // TODO: verificar que caracter recebido È v·lido
-                    // Convers„o do cÛdigo ASCII para inteiro: rxData - 48
+                    // TODO: verificar que caracter recebido √© v√°lido
+                    // Convers√£o do c√≥digo ASCII para inteiro: rxData - 48
                     menu = (rxData - 48); 
                     mostra_menu = 1;
                     caracter_recebido = 0;
                     printf("\r\n");
                 }
                 break;
-            case 3: //Menu de alteraÁ„o de intervalos
+            case 3: //Menu de altera√ß√£o de intervalos
                 if (mostra_menu == 1) {
                     printf("\r\n1- Alterar intervalo de pressao");
                     printf("\r\n2- Alterar intervalo de temperatura");
@@ -296,16 +300,16 @@ void main(void) {
                     mostra_menu = 0;
                 }
                 if (caracter_recebido == 1) {
-                    // TODO: verificar que caracter recebido È v·lido
+                    // TODO: verificar que caracter recebido √© v√°lido
                     if (!(rxData == 'x') && !(rxData == 'X')) {
-                        menu = 10 + (rxData - 48); //Convers„o de ASCII para inteiro
+                        menu = 10 + (rxData - 48); //Convers√£o de ASCII para inteiro
                         mostra_menu = 1;
                         caracter_recebido = 0;
                         printf("\r\n");
                     }
                 }
                 break;
-            case 11: //Menu de intervalo de press„o
+            case 11: //Menu de intervalo de press√£o
                 if (mostra_menu == 1) {
                     printf("\r\nIntervalos: ");
                     printf("\r\n1 - [40;60] kPa ");
@@ -317,10 +321,10 @@ void main(void) {
                     mostra_menu = 0;
                 }
                 if (caracter_recebido == 1) {
-                    // TODO: verificar que caracter recebido È v·lido
+                    // TODO: verificar que caracter recebido √© v√°lido
                     if (!(rxData == 'x') && !(rxData == 'X')) {
                         opcaoMenu = (rxData - 48);
-                        switch (opcaoMenu) { //Menu backend de alteraÁ„o de intervalo de press„o
+                        switch (opcaoMenu) { //Menu backend de altera√ß√£o de intervalo de press√£o
                             case 1:
                                 pressureMin = 40;
                                 pressureMax = 60;
@@ -348,19 +352,19 @@ void main(void) {
             case 12: 
                 if (mostra_menu == 1) { //Menu intervalos de temperatura
                     printf("\r\nIntervalos: ");
-                    printf("\r\n1 - [60;80]∫C ");
-                    printf("\r\n2 - [70;90]∫C ");
-                    printf("\r\n3 - [80;100]∫C ");
-                    printf("\r\n4 - [90;120]∫C ");
+                    printf("\r\n1 - [60;80]¬∫C ");
+                    printf("\r\n2 - [70;90]¬∫C ");
+                    printf("\r\n3 - [80;100]¬∫C ");
+                    printf("\r\n4 - [90;120]¬∫C ");
                     printf("\r\nX - Recuar");
                     printf("\r\nOpcao: ");
                     mostra_menu = 0;
                 }
                 if (caracter_recebido == 1) {
-                    // TODO: verificar que caracter recebido È v·lido
+                    // TODO: verificar que caracter recebido √© v√°lido
                     if (!(rxData == 'x') && !(rxData == 'X')) {
                         opcaoMenu = (rxData - 48);
-                        switch (opcaoMenu) { //Menu backend de alteraÁ„o de intervalo de temperatura
+                        switch (opcaoMenu) { //Menu backend de altera√ß√£o de intervalo de temperatura
                             case 1:
                                 temperatureMin = 60;
                                 temperatureMax = 80;
@@ -384,24 +388,24 @@ void main(void) {
                         printf("\r\n");
                     }
                     break;
-                    case 2: //Interrompe o processo de injeÁ„o
-                    INTCON3bits.INT2IF = 1; //Acionamento da flag do bot„o de emergÍncia
+                    case 2: //Interrompe o processo de inje√ß√£o
+                    INTCON3bits.INT2IF = 1; //Acionamento da flag do bot√£o de emerg√™ncia
                     if (mostra_menu == 1) {
                         printf("\r\nProcesso de injecao Abortado! "); //Escreve no EUSART
                         mostra_menu = 1;
                         menu=0; //Volta para o Menu principal
                     }
                     break;
-                    case 1: //InÌcio do processo de injeÁ„o
-                    INTCONbits.INT0IF = 1; //Acionamento da flag do botao de inÌcio
+                    case 1: //In√≠cio do processo de inje√ß√£o
+                    INTCONbits.INT0IF = 1; //Acionamento da flag do botao de in√≠cio
                     if (mostra_menu == 1) {
                         printf("\r\nProcesso de injecao Iniciado! "); //Escrita no EUSART
                         mostra_menu = 1;
                         menu=0; //Volta para o Menu principal
                     } 
-                    INTCONbits.INT0IF = 0; //Flag de interrupÁ„o do bot„o inicio a 0
+                    INTCONbits.INT0IF = 0; //Flag de interrup√ß√£o do bot√£o inicio a 0
                     break;
-                    default: //LimitaÁ„o de escrita EUSART ao menu
+                    default: //Limita√ß√£o de escrita EUSART ao menu
                     printf("\r\nOpcao errada\r\n"); //Escrita no EUSART
                     menu = 0; //Volta ao menu principal
                     mostra_menu = 1;
